@@ -37,17 +37,3 @@ jobs:
       - name: Push Docker image to Docker Hub
         run: |
           docker push putzflorian/yt-dlp:latest
-
-      # Step 6: Fetch the current description from README.md and update Docker Hub description
-      - name: Fetch description from README.md
-        id: fetch_description
-        run: |
-          description=$(cat README.md)
-          echo "::set-output name=description::$description"
-
-      # Step 7: Update Docker Hub description
-      - name: Update Docker Hub description
-        run: |
-          curl -X PATCH "https://hub.docker.com/v2/repositories/${{ secrets.DOCKER_USERNAME }}/yt-dlp-auto/" \
-          -H "Content-Type: application/json" \
-          -d '{"full_description": "${{ steps.fetch_description.outputs.description }}"}'
